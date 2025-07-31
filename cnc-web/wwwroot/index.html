@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Maszyny CNC</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background-color: #eee; }
+        button { padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>Dane Maszyny CNC</h1>
+    <button onclick="pobierz()">Odśwież dane</button>
+    <table id="dane">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Czas zasilania</th>
+                <th>Czas cięcia</th>
+                <th>Czas cyklu</th>
+                <th>Czas pracy</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+<script>
+async function pobierz() {
+    const res = await fetch('/api/dane');
+    const dane = await res.json();
+    const tbody = document.querySelector('#dane tbody');
+    tbody.innerHTML = '';
+    dane.slice().reverse().forEach(item => {
+        tbody.innerHTML += `
+        <tr>
+            <td>${item.czas}</td>
+            <td>${item.czasZasilania}</td>
+            <td>${item.czasCiecia}</td>
+            <td>${item.czasCyklu}</td>
+            <td>${item.czasPracy}</td>
+        </tr>`;
+    });
+}
+</script>
+</body>
+</html>
