@@ -1,49 +1,123 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Panel Maszyny CNC</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-        th { background-color: #eee; }
-        button { padding: 10px 20px; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Panel Maszyny CNC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e2f;
+      color: #ffffff;
+    }
+    header {
+      background-color: #2c2c3e;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #2c2c3e;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 14px;
+      text-align: center;
+    }
+    th {
+      background-color: #3a3a4f;
+      color: #00ff99;
+    }
+    tr:nth-child(even) {
+      background-color: #262638;
+    }
+    tr:nth-child(odd) {
+      background-color: #2e2e44;
+    }
+    .status-card {
+      background-color: #2a2a3d;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .status-active {
+      color: #00ff99;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>Dane Maszyny CNC</h1>
-    <button onclick="pobierz()">Odśwież dane</button>
+  <header>🛠️ Panel Maszyny CNC</header>
+  <div class="container">
+    <div class="controls">
+      <div class="status-card">
+        Status: <span class="status-active">ACTIVE</span>
+      </div>
+      <button onclick="pobierz()">🔄 Odśwież dane</button>
+    </div>
+
     <table id="dane">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Czas zasilania</th>
-                <th>Czas cięcia</th>
-                <th>Czas cyklu</th>
-                <th>Czas pracy</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-<script>
-async function pobierz() {
-    const res = await fetch('/api/dane');
-    const dane = await res.json();
-    const tbody = document.querySelector('#dane tbody');
-    tbody.innerHTML = '';
-    dane.slice().reverse().forEach(item => {
-        tbody.innerHTML += `
+      <thead>
         <tr>
+          <th>Data</th>
+          <th>Czas zasilania</th>
+          <th>Czas cięcia</th>
+          <th>Czas cyklu</th>
+          <th>Czas pracy</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function pobierz() {
+      const res = await fetch('/api/dane');
+      const dane = await res.json();
+      const tbody = document.querySelector('#dane tbody');
+      tbody.innerHTML = '';
+      dane.slice().reverse().forEach(item => {
+        tbody.innerHTML += `
+          <tr>
             <td>${item.czas}</td>
             <td>${item.czasZasilania}</td>
             <td>${item.czasCiecia}</td>
             <td>${item.czasCyklu}</td>
             <td>${item.czasPracy}</td>
-        </tr>`;
-    });
-}
-</script>
+          </tr>`;
+      });
+    }
+
+    // Autoładowanie danych przy starcie
+    pobierz();
+  </script>
 </body>
 </html>
