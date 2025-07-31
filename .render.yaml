@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: cnc-web
-    runtime: dotnet
-    buildCommand: "dotnet build"
-    startCommand: "dotnet run --urls http://0.0.0.0:10000"
-    env: static
-    plan: free
-    autoDeploy: false
